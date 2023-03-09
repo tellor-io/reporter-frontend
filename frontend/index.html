@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One-off Reporter Page</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>one-off report page</h1>
+    </header>
+    <div class="box">
+
+      <section>
+        <h2 >connect your wallet:</h2>
+        <button id="connectButton" onclick="App.init()" disabled>Connect</button>
+        <p>connected address:</p>
+        <p id="connectedAddress"></p>
+        <p id="tokenBalance"></p>
+      </section>
+      <section>
+        <p> contract address:</p>
+        <p id="contestAddress"></p>
+      </section>
+      <section>
+                
+        <h2>stake the token:</h2>
+        <p>(*staked trb is required to report. if already staked, proceed to & 'submit your value') </p>
+
+        <button id="approve" onclick="App.approve()">stake</button>
+        <h2>submit your value:</h2>
+        <input type="text" id="twitterHandle" placeholder="_queryId (bytes32)"/>
+        <input type="text" id="twitterHandle" placeholder="_value (bytes)"/>
+        <input type="text" id="twitterHandle" placeholder="_nonce (uint256)"/>
+        <input type="text" id="twitterHandle" placeholder="_queryData (bytes)"/>
+        <button id="register" onclick="App.register()">report</button>
+      </section>
+
+      <footer>
+        <p>
+          <a href="https://github.com/tkernell/twitter-contest">Contract code</a>
+        </p>
+      </footer>
+    </div>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <script src="./extensions/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.3/web3.min.js"></script>
+    <script src="./extensions/web3.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

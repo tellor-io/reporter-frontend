@@ -1,0 +1,35 @@
+body {
+    background:#262626;
+}
+h1 {
+    color: white;
+    font: 1.3rem 'Inconsolata', monospace;  
+    font-size:15px;
+    text-align: center;
+}
+h2 {
+    font: 1.3rem 'Inconsolata', monospace;  
+    font-size:20px;
+    color: #20f092; 
+}
+p {
+    font: 1.3rem 'Inconsolata', monospace;  
+    font-size:15px;
+    
+}
+.box {
+    border: 2px solid #20f092;
+    margin-left: 25px;
+    margin-top: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    padding: 1ex;
+    color: white;  
+    font: 1.3rem 'Inconsolata', monospace;  
+    font-size: 16px;
+}
+a {
+    font: 1.3rem 'Inconsolata', monospace;  
+    font-size:15px;
+    color: rgb(199, 143, 86);
+}
