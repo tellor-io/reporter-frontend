@@ -3,8 +3,8 @@ var App = {
   contracts: {},
   account: "0x0",
   accounts: [],
-  contestAddress: "0xA4eA8E6Cf12a23C6c923b3B9d2a679E0206C7ffc",
-  tokenAddress: "0x44Bd2aEF4399babd23Cec8851D235475902b705C",
+  contestAddress: "0xD9157453E2668B2fc45b7A803D3FEF3642430cC0",
+  tokenAddress: "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0",
   web3,
   wager: 0,
   protocolFee: 0,
@@ -51,6 +51,8 @@ var App = {
       App.contracts.Contest.options.address = App.contestAddress;
       console.log("Contract initialized");
       console.log("Contract address: " + App.contracts.Contest.options.address);
+      console.log("this is ryan", App.contestAddress);
+      console.log("this is ryan", App.getTokenBalance);
       return App.initTokenContract();
     });
   },
@@ -64,11 +66,11 @@ var App = {
       console.log(
         "Token contract address: " + App.contracts.Token.options.address
       );
-      return App.getStartTime();
+      return App.setPageParams();
     });
   },
 
-  getStartTime: function () {
+  /*getStartTime: function () {
     App.contracts.Contest.methods
       .startDeadline()
       .call()
@@ -142,7 +144,7 @@ var App = {
       .call()
       .then(function (result) {
         App.tokenDecimals = result;
-        return App.getWager();
+        return App.setPageParams();
       });
   },
 
@@ -173,7 +175,7 @@ var App = {
         document.getElementById("protocolFee").innerHTML = ownerFeeInEthString;
         return App.setPageParams();
       });
-  },
+  },*/  
 
   setPageParams: function () {
     document.getElementById("contestAddress").innerHTML = App.contestAddress;
@@ -228,11 +230,11 @@ var App = {
 
   getTokenBalance: function () {
     App.contracts.Token.methods
-      .balanceOf(App.account)
+      .balances(App.account, [])
       .call()
       .then(function (result) {
         let tokenBalance = BigInt(result) / BigInt(10 ** App.tokenDecimals);
-        let tokenBalanceString = tokenBalance.toString() + " USDC";
+        let tokenBalanceString = tokenBalance.toString() + " TRB";
         document.getElementById("tokenBalance").innerHTML = tokenBalanceString;
       });
   },

@@ -49,12 +49,12 @@ contract TheContest is UsingTellor {
     }
 
     function register(string memory _handle) public {
-        require(bytes(_handle).length > 0, "Handle cannot be empty");
+        //require(bytes(_handle).length > 0, "Handle cannot be empty");
         Member storage _member = members[msg.sender];
         require(token.transferFrom(msg.sender, address(this), wager+protocolFee), "Wager + fee transfer failed");
-        require(!_member.inTheRunning, "Account already registered");
-        require(block.timestamp < startDeadline, "Contest already started");
-        require(handleToAddress[_handle] == address(0), "Handle already registered");
+        //require(!_member.inTheRunning, "Account already registered");
+        //require(block.timestamp < startDeadline, "Contest already started");
+        //require(handleToAddress[_handle] == address(0), "Handle already registered");
         pot += wager;
         ownerBalance += protocolFee;
         remainingCount++;
