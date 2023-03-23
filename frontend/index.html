@@ -14,11 +14,13 @@
     <div class="box">
 
       <section>
+        <h2 >active networks:</h2><p style="font-size: 15px; color:white;"> ethereum</p>
         <h2 >connect your wallet:</h2>
         <button id="connectButton" onclick="App.init()" disabled>Connect</button>
         <p>connected address:</p>
         <p id="connectedAddress"></p>
         <p id="tokenBalance"></p>
+        <p id="stakedTokenBalance"></p>
       </section>
       <section>
         <p> contract address:</p>
@@ -26,21 +28,27 @@
       </section>
       <section>
                 
-        <h2>stake the token:</h2>
-        <p>(*staked trb is required to report. if already staked, proceed to & 'submit your value') </p>
-
-        <button id="approve" onclick="App.approve()">stake</button>
         <h2>submit your value:</h2>
-        <input type="text" id="twitterHandle" placeholder="_queryId (bytes32)"/>
-        <input type="text" id="twitterHandle" placeholder="_value (bytes)"/>
-        <input type="text" id="twitterHandle" placeholder="_nonce (uint256)"/>
-        <input type="text" id="twitterHandle" placeholder="_queryData (bytes)"/>
-        <button id="register" onclick="App.register()">report</button>
+        <p> 
+          <a target="_blank" href="https://queryidbuilder.herokuapp.com/spotprice">obtain query id & query data here</a>
+        </p>
+        <p><input style="width: 485px;" type="text" id="_queryId" placeholder="queryId (bytes32)"/></p>
+        <p><input style="width: 340px;"type="text" id="_value" placeholder="value (use real value i.e. if ETH price is $1800; put '1800')"/></p>
+        <p><input type="text" id="_nonce" placeholder="nonce (uint256)"/></p>
+        <p><textarea style="height:190px; width: 485px;"type="text" id="_queryData" placeholder="queryData (bytes)"></textarea></p>
+        <button id="reportValue" onclick="App.reportValue()">Submit Value</button>
       </section>
+
+      <p>(*staked trb is required to report. if you do not have TRB already staked, stake below) </p>
+
+        <h2>stake the trb token:</h2>
+        <input type="text" id="stakeAmount" placeholder="# of tokens"/>
+        <button id="stakeToken" onclick="App.stakeToken()">stake</button>
+        
 
       <footer>
         <p>
-          <a href="https://github.com/tkernell/twitter-contest">Contract code</a>
+          <a target="_blank" href="https://github.com/tkernell/twitter-contest">Contract code</a>
         </p>
       </footer>
     </div>

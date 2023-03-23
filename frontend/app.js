@@ -6,16 +6,16 @@ var App = {
   contestAddress: "0xD9157453E2668B2fc45b7A803D3FEF3642430cC0",
   tokenAddress: "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0",
   web3,
-  wager: 0,
-  protocolFee: 0,
-  startTime: 0,
-  endTime: 0,
+  //wager: 0,
+  //protocolFee: 0,
+  //startTime: 0,
+  //endTime: 0,
   tokenDecimals: 0,
-  timeLeftToRegister: 0,
-  timeLeftInContest: 0,
+  //timeLeftToRegister: 0,
+  //timeLeftInContest: 0,
 
   init: function () {
-    return App.initWeb3();
+    return App.initWeb3();a
   },
 
   initWeb3: function () {
@@ -52,7 +52,8 @@ var App = {
       console.log("Contract initialized");
       console.log("Contract address: " + App.contracts.Contest.options.address);
       console.log("this is ryan", App.contestAddress);
-      console.log("this is ryan", App.getTokenBalance);
+      console.log("this is ryan", App.tokenBalance);
+      console.log("this is staker", App.contracts.Contest.getStakerInfo);
       return App.initTokenContract();
     });
   },
@@ -66,7 +67,7 @@ var App = {
       console.log(
         "Token contract address: " + App.contracts.Token.options.address
       );
-      return App.setPageParams();
+      return App.getTokenDecimals();
     });
   },
 
@@ -136,7 +137,7 @@ var App = {
           timeLeftInContest;
         return App.getTokenDecimals();
       });
-  },
+  },*/
 
   getTokenDecimals: function () {
     App.contracts.Token.methods
@@ -148,7 +149,7 @@ var App = {
       });
   },
 
-  getWager: function () {
+  /*getWager: function () {
     App.contracts.Contest.methods
       .wager()
       .call()
@@ -183,7 +184,7 @@ var App = {
     App.getTokenBalance();
   },
 
-  approve: function () {
+  /*approve: function () {
     console.log("approved!");
     approvalAmount = BigInt(App.wager) + BigInt(App.protocolFee);
     console.log("approvalAmount: " + approvalAmount);
@@ -207,7 +208,7 @@ var App = {
       });
   },
 
-  claimLoser: function () {
+  /*claimLoser: function () {
     losingOracleIndex = document.getElementById("oracleIndex").value;
     App.contracts.Contest.methods
       .claimLoser(Number(losingOracleIndex))
@@ -226,11 +227,11 @@ var App = {
         document.getElementById("claimFundsButton").disabled = true;
         document.getElementById("claimFundsResult").innerHTML = "Claimed!";
   })
-},
+},*/
 
   getTokenBalance: function () {
     App.contracts.Token.methods
-      .balances(App.account, [])
+      .balanceOf(App.account)
       .call()
       .then(function (result) {
         let tokenBalance = BigInt(result) / BigInt(10 ** App.tokenDecimals);
@@ -238,6 +239,59 @@ var App = {
         document.getElementById("tokenBalance").innerHTML = tokenBalanceString;
       });
   },
+
+  getStakedTokenBalance: function () {
+    App.contracts.Contest.methods
+      .getStakerInfo(App.account)
+      .call()
+      .then(function (result) {
+        let stakedTokenBalance = BigInt(result) / BigInt(10 ** App.tokenDecimals);
+        let stakedTokenBalanceString = stakedTokenBalance.toString() + " TRB";
+        document.getElementById("stakedTokenBalance").innerHTML = stakedTokenBalanceString;
+      });
+  },
+
+   uintTob32: function (n) {
+    let vars = web3.utils.toHex(n);
+    vars = vars.slice(2);
+    while (vars.length < 64) {
+      vars = "0" + vars;
+    }
+    vars = "0x" + vars;
+    return vars;
+  },
+
+  reportValue: function () {
+    queryId = document.getElementById("_queryId").value;
+    value = App.uintTob32(document.getElementById("_value").value);
+    nonce = document.getElementById("_nonce").value;
+    queryData = document.getElementById("_queryData").value;
+    console.log("_queryId: " + queryId);
+    console.log("_value: " + value);
+    console.log("_nonce: " + nonce);
+    console.log("_queryData: " + queryData);
+    App.contracts.Contest.methods
+      .submitValue(queryId, value, nonce, queryData)
+      .send({ from: App.account })
+      .then(function (result) {
+        console.log(result);
+      });
+  },
+
+  to18: function() {
+    return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
+},
+
+  stakeToken: function () {
+  stakeAmount = (document.getElementById("stakeAmount").value)*100000000000000000;
+  console.log("stakeAmount: " + stakeAmount);
+  App.contracts.Contest.methods
+    .depositStake(stakeAmount)
+    .send({ from: App.account })
+    .then(function (result) {
+      console.log(result);
+    });
+},
 };
 
 $(function () {
