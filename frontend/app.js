@@ -4,7 +4,7 @@ var App = {
   account: "0x0",
   accounts: [],
   contestAddress: "0xD9157453E2668B2fc45b7A803D3FEF3642430cC0",
-  tokenAddress: "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0",
+  tokenAddress: "0x51c59c6cAd28ce3693977F2feB4CfAebec30d8a2",
   web3,
   //wager: 0,
   //protocolFee: 0,
