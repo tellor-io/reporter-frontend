@@ -1,8 +1,8 @@
 body {
-    background:#262626;
+    background:white;
 }
 h1 {
-    color: white;
+    color: #262626;
     font: 1.3rem 'Inconsolata', monospace;  
     font-size:15px;
     text-align: center;
@@ -10,12 +10,12 @@ h1 {
 h2 {
     font: 1.3rem 'Inconsolata', monospace;  
     font-size:20px;
-    color: #20f092; 
+    color: #262626; 
 }
 p {
     font: 1.3rem 'Inconsolata', monospace;  
     font-size:15px;
-    
+    color: #262626; 
 }
 .box {
     border: 2px solid #20f092;
@@ -24,7 +24,7 @@ p {
     margin-right: 25px;
     margin-bottom: 25px;
     padding: 1ex;
-    color: white;  
+    color: #262626;  
     font: 1.3rem 'Inconsolata', monospace;  
     font-size: 16px;
 }
