@@ -3,16 +3,10 @@ var App = {
   contracts: {},
   account: "0x0",
   accounts: [],
-  contestAddress: "0xD9157453E2668B2fc45b7A803D3FEF3642430cC0",
-  tokenAddress: "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0",
+  contestAddress: {}, 
+  tokenAddress: {},
   web3,
-  //wager: 0,
-  //protocolFee: 0,
-  //startTime: 0,
-  //endTime: 0,
   tokenDecimals: 0,
-  //timeLeftToRegister: 0,
-  //timeLeftInContest: 0,
 
   init: function () {
     return App.initWeb3();a
@@ -38,9 +32,10 @@ var App = {
         App.account = accounts[0];
         console.log("In initEth: " + App.account);
         web3.eth.getChainId().then(function (result) {
-          console.log("Chain ID: " + result);
-        });
-        return App.initContestContract();
+          App.chainId = result;
+          console.log("Chain ID: " + App.chainId);
+          return App.initContestContract();
+        })
       });
   },
 
@@ -48,10 +43,17 @@ var App = {
     var pathToAbi = "./abis/TheContest.json";
     $.getJSON(pathToAbi, function (abi) {
       App.contracts.Contest = new web3.eth.Contract(abi);
-      App.contracts.Contest.options.address = App.contestAddress;
+      console.log(App.chainId)
+      if (App.chainId === 421613) {
+        App.contracts.Contest.options.address = "0xb2CB696fE5244fB9004877e58dcB680cB86Ba444" 
+      }
+     else  {
+        App.contracts.Contest.options.address = "0xD9157453E2668B2fc45b7A803D3FEF3642430cC0" 
+      }
+      console.log(App.chainId)
       console.log("Contract initialized");
-      console.log("Contract address: " + App.contracts.Contest.options.address);
-      console.log("this is ryan", App.contestAddress);
+      console.log("Contract address: " +  App.contracts.Contest.options.address);
+      console.log("this is ryan", App.contracts.contestAddress);
       console.log("this is ryan", App.tokenBalance);
       console.log("this is staker", App.contracts.Contest.getStakerInfo);
       return App.initTokenContract();
@@ -62,83 +64,48 @@ var App = {
     var pathToAbi = "./abis/ERC20.json";
     $.getJSON(pathToAbi, function (abi) {
       App.contracts.Token = new web3.eth.Contract(abi);
-      App.contracts.Token.options.address = App.tokenAddress;
+      if (App.chainId === 5) {
+        App.contracts.Token.options.address = "0x51c59c6cAd28ce3693977F2feB4CfAebec30d8a2" //eth goerli 
+      } 
+      if (App.chainId === 1)  {
+        App.contracts.Token.options.address = "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0" // eth main
+      } 
+      if (App.chainId === 137)  {
+        App.contracts.Token.options.address = "0xE3322702BEdaaEd36CdDAb233360B939775ae5f1" // polygon main
+      }
+      if (App.chainId === 80001)  {
+        App.contracts.Token.options.address = "0xce4e32fe9d894f8185271aa990d2db425df3e6be" // polygon mumbai
+      } 
+      if (App.chainId === 100)  {
+        App.contracts.Token.options.address = "0xAAd66432d27737ecf6ED183160Adc5eF36aB99f2" // gnosis main
+      } 
+      if (App.chainId === 10200)  {
+        App.contracts.Token.options.address = "0xe7147C5Ed14F545B4B17251992D1DB2bdfa26B6d" // gnosis chiado
+      }
+      if (App.chainId === 10)  {
+        App.contracts.Token.options.address = "0xaf8cA653Fa2772d58f4368B0a71980e9E3cEB888" // optimism mainnet
+      }
+      if (App.chainId === 420)  {
+        App.contracts.Token.options.address = "0x3251838bd813fdf6a97D32781e011cce8D225d59" //optimism goerli
+      }
+      if (App.chainId === 42161)  {
+        App.contracts.Token.options.address = "0xd58D345Fd9c82262E087d2D0607624B410D88242" // arbitrum one
+      }
+      if (App.chainId === 421613)  {
+        App.contracts.Token.options.address = "0x8d1bB5eDdFce08B92dD47c9871d1805211C3Eb3C" // arbitrum goerli
+      }
+      if (App.chainId === 3141)  {
+        App.contracts.Token.options.address = "0xe7147C5Ed14F545B4B17251992D1DB2bdfa26B6d" // filecoin hyperspace
+      }
       console.log("Token contract initialized");
       console.log(
-        "Token contract address: " + App.contracts.Token.options.address
+        "Token contract address: ", App.contracts.Token.options.address
       );
       return App.getTokenDecimals();
     });
   },
 
-  /*getStartTime: function () {
-    App.contracts.Contest.methods
-      .startDeadline()
-      .call()
-      .then(function (result) {
-        // Define the Unix timestamp (in seconds)
-        let timestampInMilliseconds = result * 1000;
-
-        // Create a new Date object and use the .getTime() method to set the time
-        const date = new Date();
-        date.setTime(timestampInMilliseconds);
-
-        // Use the .toString() method to convert the date to a human-readable string
-        const dateString = date.toString();
-
-        console.log(dateString); // Outputs: "Sun Jan 17 2021 12:00:00 GMT+0000 (Greenwich Mean Time)"
-        document.getElementById("contestStartTime").innerHTML = dateString;
-        timeLeftToRegister = result - Math.floor(Date.now() / 1000);
-        // get time left to register in hours
-        timeLeftToRegister = timeLeftToRegister / 3600;
-        console.log("timeLeftToRegister: " + timeLeftToRegister + " hours")
-        App.timeLeftToRegister = timeLeftToRegister;
-        if (timeLeftToRegister < 0) {
-          timeLeftToRegister = "Contest has started";
-          document.getElementById("register").disabled = true;
-          document.getElementById("approve").disabled = true;
-          document.getElementById("claimLoserButton").disabled = false;
-        }
-        document.getElementById("timeLeftToRegister").innerHTML =
-          timeLeftToRegister;
-        return App.getEndTime();
-      });
-  },
-
-  getEndTime: function () {
-    App.contracts.Contest.methods
-      .endDeadline()
-      .call()
-      .then(function (result) {
-        // Define the Unix timestamp (in seconds)
-        let timestampInMilliseconds = result * 1000;
-
-        // Create a new Date object and use the .getTime() method to set the time
-        const date = new Date();
-        date.setTime(timestampInMilliseconds);
-
-        // Use the .toString() method to convert the date to a human-readable string
-        const dateString = date.toString();
-
-        console.log(dateString); // Outputs: "Sun Jan 17 2021 12:00:00 GMT+0000 (Greenwich Mean Time)"
-        document.getElementById("contestEndTime").innerHTML = dateString;
-        timeLeftInContest = result - Math.floor(Date.now() / 1000);
-        // get time left in contest in days
-        timeLeftInContest = timeLeftInContest / 86400;
-        App.timeLeftInContest = timeLeftInContest;
-        if (timeLeftInContest < 0) {
-          timeLeftInContest = "Contest has ended";
-          document.getElementById("claimFundsButton").disabled = false;
-        }
-        if (App.timeLeftToRegister > 0) {
-          timeLeftInContest = "Contest has not started";
-        }
-        document.getElementById("timeLeftInContest").innerHTML =
-          timeLeftInContest;
-        return App.getTokenDecimals();
-      });
-  },*/
-
+  
   getTokenDecimals: function () {
     App.contracts.Token.methods
       .decimals()
@@ -149,85 +116,15 @@ var App = {
       });
   },
 
-  /*getWager: function () {
-    App.contracts.Contest.methods
-      .wager()
-      .call()
-      .then(function (result) {
-        App.wager = result;
-        console.log("Wager: " + App.wager);
-        let wagerInEth = BigInt(App.wager) / BigInt(10 ** App.tokenDecimals);
-        let wagerInEthString = wagerInEth.toString() + " USDC";
-        document.getElementById("wager").innerHTML = wagerInEthString;
-        App.wager = result;
-        return App.getProtocolFee();
-      });
-  },
-
-  getProtocolFee: function () {
-    App.contracts.Contest.methods
-      .protocolFee()
-      .call()
-      .then(function (result) {
-        App.protocolFee = result;
-        let ownerFeeInEth =
-          BigInt(App.protocolFee) / BigInt(10 ** App.tokenDecimals);
-        let ownerFeeInEthString = ownerFeeInEth.toString() + " USDC";
-        document.getElementById("protocolFee").innerHTML = ownerFeeInEthString;
-        return App.setPageParams();
-      });
-  },*/  
+  
 
   setPageParams: function () {
-    document.getElementById("contestAddress").innerHTML = App.contestAddress;
+    document.getElementById("contestAddress").innerHTML = App.contracts.Contest.options.address;
     document.getElementById("connectedAddress").innerHTML = App.account;
     App.getTokenBalance();
   },
 
-  /*approve: function () {
-    console.log("approved!");
-    approvalAmount = BigInt(App.wager) + BigInt(App.protocolFee);
-    console.log("approvalAmount: " + approvalAmount);
-    App.contracts.Token.methods
-      .approve(App.contestAddress, approvalAmount)
-      .send({ from: App.account })
-      .then(function (result) {
-        console.log(result);
-      });
-  },
 
-  register: function () {
-    twitterHandle = document.getElementById("twitterHandle").value;
-    console.log("twitterHandle: " + twitterHandle);
-    App.contracts.Contest.methods
-      .register(twitterHandle)
-      .send({ from: App.account })
-      .then(function (result) {
-        console.log(result);
-        App.getTokenBalance();
-      });
-  },
-
-  /*claimLoser: function () {
-    losingOracleIndex = document.getElementById("oracleIndex").value;
-    App.contracts.Contest.methods
-      .claimLoser(Number(losingOracleIndex))
-      .send({ from: App.account })
-      .then(function (result) {
-        console.log(result);
-      });
-  },
-
-  claimFunds: function () {
-    App.contracts.Contest.methods
-      .claimFunds()
-      .send({ from: App.account })
-      .then(function (result) {
-        console.log(result);
-        document.getElementById("claimFundsButton").disabled = true;
-        document.getElementById("claimFundsResult").innerHTML = "Claimed!";
-  })
-},*/
 
   getTokenBalance: function () {
     App.contracts.Token.methods
@@ -251,7 +148,14 @@ var App = {
       });
   },
 
-   uintTob32: function (n) {
+
+
+  /*to18: function(n) {
+    return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
+},*/
+
+
+   /*uintTob32: function (n) {
     let vars = web3.utils.toHex(n);
     vars = vars.slice(2);
     while (vars.length < 64) {
@@ -259,15 +163,22 @@ var App = {
     }
     vars = "0x" + vars;
     return vars;
+  },*/
+
+  uintTob32: function (n) {
+    let vars = web3.utils.toBN(n).toString('hex');
+    vars = vars.padStart(64, '0');
+    return  vars;
   },
+  
 
   reportValue: function () {
     queryId = document.getElementById("_queryId").value;
-    value = App.uintTob32(document.getElementById("_value").value);
+    value = "0x" + App.uintTob32(web3.utils.toWei(document.getElementById("_value").value, 'ether')).padStart(64, '0');
     nonce = document.getElementById("_nonce").value;
     queryData = document.getElementById("_queryData").value;
     console.log("_queryId: " + queryId);
-    console.log("_value: " + value);
+    console.log("_value: "  + value.padStart(64, '0'));
     console.log("_nonce: " + nonce);
     console.log("_queryData: " + queryData);
     App.contracts.Contest.methods
@@ -278,12 +189,10 @@ var App = {
       });
   },
 
-  to18: function() {
-    return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
-},
+
 
   stakeToken: function () {
-  stakeAmount = (document.getElementById("stakeAmount").value)*100000000000000000;
+  stakeAmount = (document.getElementById("stakeAmount").value)*100000000000000000n;
   console.log("stakeAmount: " + stakeAmount);
   App.contracts.Contest.methods
     .depositStake(stakeAmount)

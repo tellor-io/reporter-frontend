@@ -1,4 +1,4 @@
-const web3 = require("web3");
+/*const web3 = require("web3");
 const { ethers } = require("hardhat");
 const BN = web3.utils.BN;
 
@@ -387,4 +387,4 @@ export const convertToSeconds = (amount, type) => {
     default:
       return
   }
-}
+}*/
