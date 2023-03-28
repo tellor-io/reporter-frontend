@@ -174,7 +174,7 @@ var App = {
 
   reportValue: function () {
     queryId = document.getElementById("_queryId").value;
-    value = "0x" + App.uintTob32(web3.utils.toWei(document.getElementById("_value").value, 'ether')).padStart(64, '0');
+    value = document.getElementById("_value").value;
     nonce = document.getElementById("_nonce").value;
     queryData = document.getElementById("_queryData").value;
     console.log("_queryId: " + queryId);
@@ -188,6 +188,9 @@ var App = {
         console.log(result);
       });
   },
+
+  //     value = "0x" + App.uintTob32(web3.utils.toWei(document.getElementById("_value").value, 'ether')).padStart(64, '0');
+
 
 
 

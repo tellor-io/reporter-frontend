@@ -18,8 +18,8 @@
         <button id="connectButton" onclick="App.init()" disabled>Connect</button>
         <p>connected address:</p>
         <p id="connectedAddress"></p>
-        <p id="tokenBalance"></p>
-        <p id="stakedTokenBalance"></p>
+       <!--  <p id="tokenBalance"></p>-->
+         <!--<p id="stakedTokenBalance"></p>-->
       </section>
       <section>
         <p> contract address:</p>
@@ -31,23 +31,23 @@
         <p> 
           <a target="_blank" href="https://queryidbuilder.herokuapp.com/spotprice">obtain query id & query data here</a>
         </p>
-        <p><input style="width: 485px;" type="text" id="_queryId" placeholder="queryId (bytes32)"/></p>
-        <p><input style="width: 340px;"type="text" id="_value" placeholder="value (use actual value i.e. if ETH price is $1800; put '1800')"/></p>
-        <p><input type="text" id="_nonce" placeholder="nonce (uint256)"/></p>
-        <p><textarea style="height:190px; width: 485px;"type="text" id="_queryData" placeholder="queryData (bytes)"></textarea></p>
+        <p><input style="width: 485px;" type="text" id="_queryId" placeholder="_queryId (bytes32)"/></p>
+        <p><input style="width: 350px;"type="text" id="_value" placeholder="_value (bytes)"/></p>
+        <p><input type="text" id="_nonce" placeholder="_nonce (uint256)"/></p>
+        <p><textarea style="height:190px; width: 485px;"type="text" id="_queryData" placeholder="_queryData (bytes)"></textarea></p>
         <button id="reportValue" onclick="App.reportValue()">Submit Value</button>
       </section>
 
       <p>(*staked trb is required to report. if you do not have TRB already staked, stake below) </p>
 
         <h2>stake the trb token:</h2>
-        <input type="text" id="stakeAmount" placeholder="actual # of tokens"/>
+        <input style="width: 285px;" type="text" id="stakeAmount" placeholder="actual # of tokens i.e. '100' for 100 tokens"/>
         <button id="stakeToken" onclick="App.stakeToken()">stake</button>
         
 
       <footer>
         <p>
-          <a target="_blank" href="https://github.com/tkernell/twitter-contest">Contract code</a>
+          <a target="_blank" href="https://github.com/tellor-io/reporter-frontend">Front-End code</a>
         </p>
       </footer>
     </div>
