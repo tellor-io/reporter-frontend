@@ -2,7 +2,9 @@ body {
     background:white;
 }
 h1 {
+
     color: #07643A;
+
     font: 1.3rem 'Inconsolata', monospace;  
     font-size:15px;
     text-align: center;
@@ -11,6 +13,7 @@ h2 {
     font: 1.3rem 'Inconsolata', monospace;  
     font-size:20px;
     color: #07643A; 
+
 }
 p {
     font: 1.3rem 'Inconsolata', monospace;  
